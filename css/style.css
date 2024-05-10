@@ -1,0 +1,85 @@
+:root {
+    --primary-color: #041f31;
+    --secondary-color: #f69876;
+    --dark-orange: #b8676f;
+    --text-color: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    height: 100%;
+    
+    color: var(--secondary-color);
+    font-family: 'Figtree', serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.5;
+    
+    background-image: linear-gradient(#041f31 60%, #7d515a 80%, #f69876 100%);
+    background-attachment: fixed;
+}
+
+/* ================
+     2. Typography
+   ================ */
+
+h1, h2, h3, main.p {
+    max-width: 75ch;
+}
+
+h1 {
+    font-size: 33px;
+    font-weight: 700;
+}
+
+p {
+    color: var(--text-color);
+}
+nnnnn
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+a:visited {
+    color: var(--text-color);
+}
+
+a:hover, a:focus {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+/* ================
+    4. Components
+   ================ */
+
+/* 4.1 buttons */
+
+button,input[type=submit] {
+    border: 2px solid var(--secondary-color);
+    /* takes the font from the outer container --- isn't font family inherited anyway? */
+    font-family: inherit;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 20px;
+    border-bottom: 3px solid var(--dark-orange);
+    transition: opacity 0.2s;
+}
+
+button:hover, button:focus {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+button a:hover {
+    color: var(--text-color);
+}
