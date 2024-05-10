@@ -1,7 +1,4 @@
 :root {
-    --primary-color: #041f31;
-    --secondary-color: #f69876;
-    --dark-orange: #b8676f;
     --text-color: #ffffff;
 }
 
@@ -13,13 +10,13 @@ body {
 
     height: 100%;
     
-    color: var(--secondary-color);
+    color: var(--text-color);
     font-family: 'Figtree', serif;
     font-weight: 400;
     font-size: 18px;
     line-height: 1.5;
     
-    background-image: linear-gradient(#041f31 60%, #7d515a 80%, #f69876 100%);
+    background-image: linear-gradient(225deg, lightpink 30%, violet 60%, #96DED1 100%);
     background-attachment: fixed;
 }
 
@@ -39,7 +36,6 @@ h1 {
 p {
     color: var(--text-color);
 }
-nnnnn
 
 a {
     text-decoration: none;
