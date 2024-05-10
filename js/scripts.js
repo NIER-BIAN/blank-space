@@ -9,7 +9,7 @@ let songList =[
 	name: 'You Need To Calm Down',
 	album: 'Lover',
 	year: 2019,
-	category: ['happy']
+	category: ['happy'],
     },
     {
 	name: 'Death By A Thousand Cuts',
@@ -18,3 +18,9 @@ let songList =[
 	category: ['sad', 'breakup'],
     }
 ];
+
+for (let i = 0; i < songList.length; i++){
+    output = `${songList[i].name} (${songList[i].year})`
+    let exclamation =  songList[i].year < 2020 ? ' <-- Wow! This song is from The Great Before Times!' : '';
+    document.write("<p>" + output + exclamation + "</p>");
+}
