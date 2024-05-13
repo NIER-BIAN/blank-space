@@ -1,4 +1,4 @@
-/* Part 2: IIFE */
+/* 0. IIFE  */
 let songRepository = (function () {
     
     let songList = [
@@ -39,12 +39,13 @@ let songRepository = (function () {
 	songList.push(song);
 	
     }
-
+    
     function getAll() {
 	return songList;
     }
 
     function find(searchTerm) {
+	
 	// anonymous arrow function
 	// takes in parameter 'song' and returns true if name matches searchterm
 	// filter() method of Array instances then shallow copies that portion
@@ -57,44 +58,51 @@ let songRepository = (function () {
 	return result;
     }
 
+    // function to be passed to addButtonEventHandler in addListItem
+    function showDetails(song) {
+	console.log(song);
+    }
+
+    // function to be passed to addListItem
+    function addButtonEventHandler(button, song) {
+	button.addEventListener('click', function() {
+	    showDetails(song);
+	})
+    }
+
+    function addListItem(song) {
+	
+	let container = document.querySelector('.song-list');
+	let listItem = document.createElement('li');
+
+	// Button
+	let button = document.createElement('button');
+	button.innerText = song.name;
+	button.classList.add('button__secondary');
+	listItem.appendChild(button);
+	container.appendChild(listItem);
+
+	// Button event handler
+	addButtonEventHandler(button, song);
+    }
+
     return {
+	
 	add: add,
 	getAll: getAll,
 	find: find,
+	addListItem: addListItem,
+
+	//not exposed: addButtonEventHandler() and showDetails()
     };
 
 })();
 
-songRepository.add(
-    {
-	name: 'You\'re On Your Own, Kid',
-	album: 'Midnights',
-	year: 2022,
-	category: ['happy', 'break up'],
-    }
-)
+/* 1. List out all songs */
 
-/* Part 1: forEach() Loops */
+// getAll() calls addListItem(), which calls addButtonEventHandler(), which calls showDetails()
+// out of chain at the time: find() and add()
 
 songRepository.getAll().forEach(function(song) {
-    document.write(`<p/>The song \"${song.name}\" is from the album \"${song.album}\" which came out in ${song.year}.</p>`)
+    songRepository.addListItem(song);
 });
-
-/*
-for (let i = 0; i < songList.length; i++) {
-    output = `${songList[i].name} (${songList[i].year})`;
-    let exclamation = songList[i].year < 2020 ? ' <-- Wow! This song is from The Great Before Times!' : '';
-    document.write("<p>" + output + exclamation + "</p>");
-}
-
-function printArrayDetails(){
-    for (let i = 0; i < songList.length; i++){
-	output = `${songList[i].name} (${songList[i].year})`;
-	let exclamation = songList[i].year < 2020 ? ' <-- Wow! This song is from The Great Before Times!' : '';
-	document.write("<p>" + output + exclamation + "</p>");
-    }
-}
-
-printArrayDetails();
-
-*/

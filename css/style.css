@@ -1,5 +1,7 @@
 :root {
     --text-color: #ffffff;
+    --primary-color: #F660AB;
+    --secondary-color: #5FF5AA;
 }
 
 * {
@@ -21,10 +23,10 @@ body {
 }
 
 /* ================
-     2. Typography
+     Typography
    ================ */
 
-h1, h2, h3, main.p {
+h1, h2, h3, main>p {
     max-width: 75ch;
 }
 
@@ -54,22 +56,29 @@ a:hover, a:focus {
 
 
 /* ================
-    4. Components
+    Components
    ================ */
 
-/* 4.1 buttons */
+/* buttons */
 
-button,input[type=submit] {
-    border: 2px solid var(--secondary-color);
+button, input[type=submit] {
+    border: 2px solid var(--primary-color);
     /* takes the font from the outer container --- isn't font family inherited anyway? */
     font-family: inherit;
     background-color: var(--primary-color);
-    color: var(--secondary-color);
+    color: var(--text-color);
     text-decoration: none;
     padding: 10px;
     border-radius: 20px;
-    border-bottom: 3px solid var(--dark-orange);
+    border-bottom: 3px solid red;
     transition: opacity 0.2s;
+}
+
+.button__secondary {
+    border: 2px solid white;
+    background-color: red;
+    color: white;
+    border-bottom: 3px solid red;
 }
 
 button:hover, button:focus {
