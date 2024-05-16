@@ -1,28 +1,33 @@
 /* 0. IIFE  */
 let songRepository = (function () {
     
-    let songList = [
-	{
-	    name: 'Blank Space',
-	    album: '1989',
-	    year: 2023,
-	    category: ['happy', 'breakup'],
-	},
-	{
-	    name: 'You Need To Calm Down',
-	    album: 'Lover',
-	    year: 2019,
-	    category: ['happy'],
-	},
-	{
-	    name: 'Death By A Thousand Cuts',
-	    album: 'Lover',
-	    year: 2019,
-	    category: ['sad', 'breakup'],
-	}
-    ];
+    let songList = [];
+    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+    // apiUrl = 'https://api.lyrics.ovh/v1/Coldplay'
 
-    function add(song) {
+    //--- loading message for loadSongsFromAPI() & loadDetailsFromAPI() ----------//
+    
+    function showLoadingMessage() {
+	
+	let loadingMessage = document.createElement('p');
+	let container = document.querySelector('.loading-message-wrapper');
+	
+	loadingMessage.innerText = 'Loading. Please wait!';
+	loadingMessage.classList.add('loading-message');
+	
+	container.appendChild(loadingMessage);
+    }
+
+    function hideLoadingMessage() {
+	let container = document.querySelector('.loading-message-wrapper');
+	let loadingMessage = document.querySelector('.loading-message');;
+	
+	container.removeChild(loadingMessage);
+    }
+    
+    //------------- loadSongsFromAPI calls pushToSongList -------------------//
+    
+    function pushToSongList(song) {
 	
 	/* Check if object*/
 	if (typeof(song) !== 'object') {
@@ -30,20 +35,50 @@ let songRepository = (function () {
 	}
 
 	/* Check if contains right fields*/
-	expectedFields = ['name', 'album', 'year', 'category'].toString();
-	songKeys = Object.keys(song).toString();
-	if (songKeys !== expectedFields) {
-	    return 'Added item must contain the fields name, album, year, and category.';
-	}
+	// expectedFields = ['name', 'album', 'year', 'category'].toString();
+	// songKeys = Object.keys(song).toString();
+	// if (songKeys !== expectedFields) {
+	//    return 'Added item must contain the fields name, album, year, and category.';
+	//}
 
 	songList.push(song);
-	
     }
     
-    function getAll() {
-	return songList;
+    function loadSongsFromAPI() {
+
+	showLoadingMessage();
+	
+	//fetch returns promise
+	return fetch(apiUrl).then(function (response) {
+
+	    return response.json();
+	    
+	}).then(function (json) {
+
+	    hideLoadingMessage();
+	    json.results.forEach(function (item) {
+
+		//create song
+		let song = {
+		    name: item.name,
+		    //loadDetailsFromAPI() will take detailsUrl as arg
+		    detailsUrl: item.url
+		};
+
+		// push to songList
+		pushToSongList(song);
+	    });
+	    
+	}).catch(function (errorMessage) {
+
+	    hideLoadingMessage();
+	    console.error(errorMessage);
+	    
+	})
     }
 
+    //-------------------------------- find ------------------------------//
+    
     function find(searchTerm) {
 	
 	// anonymous arrow function
@@ -58,9 +93,49 @@ let songRepository = (function () {
 	return result;
     }
 
-    // function to be passed to addButtonEventHandler in addListItem
+    //------------------------------ getAllSongs ---------------------------//
+    
+    // getAllSongs() calls showSongButton() in main logic
+    // which calls addButtonEventHandler()
+    // which calls showDetails() which calls loadDetailsFromAPI
+    
+    function loadDetailsFromAPI(item) {
+
+	showLoadingMessage();
+	
+	let url = item.detailsUrl;
+
+	//fetch returns promise
+	return fetch(url).then(function (response) {
+	    
+	    return response.json();
+	    
+	}).then(function (details) {
+
+	    hideLoadingMessage();
+
+	    // Now we add the details to the song
+	    item.imageUrl = details.sprites.front_default;
+	    item.height = details.height;
+	    item.types = details.types;
+	    
+	}).catch(function (errorMessage) {
+
+	    hideLoadingMessage();
+	    console.error(errorMessage);
+	    
+	});
+    }
+    
     function showDetails(song) {
-	console.log(song);
+
+	// loadDetailsFromAPI returns a promise
+	// the console.log(song) statement is placed inside the .then() method to ensure
+	// details have been loaded before logging i.e. wait for asynchronous operation of fetch
+	
+	loadDetailsFromAPI(song).then(function () {
+	    console.log(song);
+	})
     }
 
     // function to be passed to addListItem
@@ -70,7 +145,7 @@ let songRepository = (function () {
 	})
     }
 
-    function addListItem(song) {
+    function showSongButton(song) {
 	
 	let container = document.querySelector('.song-list');
 	let listItem = document.createElement('li');
@@ -78,7 +153,6 @@ let songRepository = (function () {
 	// Button
 	let button = document.createElement('button');
 	button.innerText = song.name;
-	button.classList.add('button__secondary');
 	listItem.appendChild(button);
 	container.appendChild(listItem);
 
@@ -86,23 +160,31 @@ let songRepository = (function () {
 	addButtonEventHandler(button, song);
     }
 
+    function getAllSongs() {
+	return songList;
+    }
+
     return {
 	
-	add: add,
-	getAll: getAll,
+	pushToSongList: pushToSongList,
+	loadSongsFromAPI: loadSongsFromAPI,
 	find: find,
-	addListItem: addListItem,
+	showSongButton: showSongButton,
+	getAllSongs: getAllSongs,
 
-	//not exposed: addButtonEventHandler() and showDetails()
+	//not exposed: addButtonEventHandler(), loadDetailsFromAPI(), and  showDetails()
     };
 
 })();
 
 /* 1. List out all songs */
 
-// getAll() calls addListItem(), which calls addButtonEventHandler(), which calls showDetails()
-// out of chain at the time: find() and add()
-
-songRepository.getAll().forEach(function(song) {
-    songRepository.addListItem(song);
+//loadSongsFromAPI() contacts API and pushes to songList
+songRepository.loadSongsFromAPI().then(function() {
+    
+    // getAllSongs() returns songList
+    songRepository.getAllSongs().forEach(function(pokemon){
+	// for each song in songList, a button is created
+	songRepository.showSongButton(pokemon);
+    });
 });

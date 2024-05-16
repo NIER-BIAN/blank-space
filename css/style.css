@@ -54,6 +54,13 @@ a:hover, a:focus {
     text-decoration: none;
 }
 
+.loading-message-wrapper {
+    color: var(--text-color);
+    background: var(--secondary-color);
+    width: 30ch;
+    padding: 0 20px 0 20px;
+    border-radius: 25px;
+}
 
 /* ================
     Components
@@ -72,13 +79,6 @@ button, input[type=submit] {
     border-radius: 20px;
     border-bottom: 3px solid red;
     transition: opacity 0.2s;
-}
-
-.button__secondary {
-    border: 2px solid white;
-    background-color: red;
-    color: white;
-    border-bottom: 3px solid red;
 }
 
 button:hover, button:focus {
