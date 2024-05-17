@@ -277,12 +277,13 @@ let songModalDisplay = (function () {
 	// Borrows showModal's container html div
 	// as well as its functions to add title, message, and close button
 	// as well as all 3 closing methods since keydown and click event listeners were added to .modal-container
+	showModal(header, message, imageUrl)
 
-	let dialogContainer = document.querySelector('.modal-container');
+	let dialogContainer = modalContainer;
 
 	// Add confirm and cancel button
-	let dialogContent = modalContainer.querySelector('.modal-content');
-
+	let dialogContent = dialogContainer.querySelector('.modal-content');
+	
 	let confirmButton = document.createElement('button');
 	confirmButton.classList.add('dialog-confirm');
 	confirmButton.innerText = 'Confirm';
@@ -321,15 +322,19 @@ let songModalDisplay = (function () {
     };
 })();
 
-//Event-listener for showing modal
+// Event-listener for show modal button
+
+testImageURL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png/440px-Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png'
 
 document.querySelector('.show-modal-button').addEventListener('click', () => {
-    songModalDisplay.showModal('Bejeweled', 'Putting someone first only works when you\'re in their top five.');
+    songModalDisplay.showModal('Bejeweled', 'Putting someone first only works when you\'re in their top five.', testImageURL);
 });
+
+// Event-listener for show dialog button
 
 document.querySelector('.show-dialog-button').addEventListener('click', () => {
     //showDialog returns a promise
-    songModalDisplay.showDialog('Bejeweled', 'Putting someone first only works when you\'re in their top five.').then(function() {
+    songModalDisplay.showDialog('Bejeweled', 'Putting someone first only works when you\'re in their top five.', testImageURL).then(function() {
 	alert('confirmed');
     }, () => {
 	alert('not confirmed');
