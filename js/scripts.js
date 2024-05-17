@@ -98,6 +98,7 @@ let songRepository = (function () {
     // getAllSongs() calls showSongButton() in main logic
     // which calls addButtonEventHandler()
     // which calls showDetails() which calls loadDetailsFromAPI
+    // which in turns calls songModalDisplay.showModal (songTitle, songText)
     
     function loadDetailsFromAPI(item) {
 
@@ -134,7 +135,7 @@ let songRepository = (function () {
 	// details have been loaded before logging i.e. wait for asynchronous operation of fetch
 	
 	loadDetailsFromAPI(song).then(function () {
-	    console.log(song);
+	    songModalDisplay.showModal(song.name, song.height, song.imageUrl);
 	})
     }
 
@@ -195,7 +196,7 @@ let songModalDisplay = (function () {
 
     let modalContainer = document.querySelector('.modal-container');
 
-    function showModal(SongTitle, SongText) {
+    function showModal(SongTitle, SongText, SongImageUrl) {
 	modalContainer.classList.add('is-visible');
 
 	// Clear all existing html in container
@@ -211,7 +212,7 @@ let songModalDisplay = (function () {
 	
 	// Add other modal elements as children to modalContent
 	
-	// 1 of 3: close button
+	// 1 of 4: close button
 	let modalCloseButton = document.createElement('button');
 	modalCloseButton.classList.add('modal-close-button');
 	modalCloseButton.innerText = 'Close';
@@ -219,15 +220,24 @@ let songModalDisplay = (function () {
 	modalCloseButton.addEventListener('click', hideModal);
 	modalContent.appendChild(modalCloseButton);
 
-	// 2 of 3: title
+	// 2 of 4: title
 	let modalTitle = document.createElement('h1');
-	modalTitle.innerText = SongTitle;
+	
+	//tweak name cos PokeAPI didn't capitalise first letter
+	tweakedName = SongTitle.charAt(0).toUpperCase() + SongTitle.slice(1);
+	
+	modalTitle.innerText = tweakedName;
 	modalContent.appendChild(modalTitle);
 
-	// 3 of 3: text
+	// 3 of 4: text
 	let modalText = document.createElement('p');
-	modalText.innerText = SongText;
+	modalText.innerText = `Height: ${SongText}`;
 	modalContent.appendChild(modalText);
+
+	// 4 of 4: image
+	let modalImage = document.createElement('img');
+	modalImage.src = SongImageUrl;
+	modalContent.appendChild(modalImage);
     }
 
     let takePromiseOutOfLimbo;
@@ -262,12 +272,11 @@ let songModalDisplay = (function () {
 	}
     });
 
-    function showDialog(header, message) {
+    function showDialog(header, message, imageUrl) {
 
 	// Borrows showModal's container html div
 	// as well as its functions to add title, message, and close button
 	// as well as all 3 closing methods since keydown and click event listeners were added to .modal-container
-	showModal(header, message);
 
 	let dialogContainer = document.querySelector('.modal-container');
 
