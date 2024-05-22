@@ -129,7 +129,11 @@ let songRepository = (function () {
     
     function loadDetailsFromAPI(item) {
 
-	showLoadingMessage();
+	// Get a head start on empty old modal
+	// query for appropriate space to fill in DOM
+	let modalHeader = $('.modal-header');
+	let modalTitle = $('.modal-title');
+	let modalBody = $('.modal-body');
 	
 	let url = item.detailsUrl;
 
@@ -162,25 +166,32 @@ let songRepository = (function () {
 	let modalHeader = $('.modal-header');
 	let modalTitle = $('.modal-title');
 	let modalBody = $('.modal-body');
-	// empty what's been there before
-	modalTitle.empty();
-	modalBody.empty();
 
-	// Wait for a sec so modal shows up cleanly
+	// loadDetailsFromAPI returns a promise
+	// the console.log(song) statement is placed inside the .then() method to ensure
+	// details have been loaded before logging i.e. wait for asynchronous operation of fetch
 
-	setTimeout(() => {
-	    // loadDetailsFromAPI returns a promise
-	    // the console.log(song) statement is placed inside the .then() method to ensure
-	    // details have been loaded before logging i.e. wait for asynchronous operation of fetch
-	    loadDetailsFromAPI(song).then(function () {
-		showModal(song);
-	    })
-	}, 1000);
+	loadDetailsFromAPI(song).then(function () {
+	    showModal(song);
+	})
     }
 
     // function to be passed to addListItem
     function addButtonEventHandler(button, song) {
 	button.addEventListener('click', function() {
+
+	    showLoadingMessage();
+
+	    // Get a head start on empty old modal
+	    // query for appropriate space to fill in DOM
+	    let modalHeader = $('.modal-header');
+	    let modalTitle = $('.modal-title');
+	    let modalBody = $('.modal-body');
+	    // empty what's been there before
+	    modalTitle.empty();
+	    modalBody.empty();
+
+	    
 	    showDetails(song);
 	})
     }
