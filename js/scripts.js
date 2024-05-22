@@ -116,10 +116,6 @@ let songRepository = (function () {
 	let modalTitle = $('.modal-title');
 	let modalBody = $('.modal-body');
 
-	// empty what's been there before
-	modalTitle.empty();
-	modalBody.empty();
-
 	let name = $('<h1>' + song.name + '</h1>');
 	modalTitle.append(name);
 	
@@ -161,13 +157,25 @@ let songRepository = (function () {
     
     function showDetails(song) {
 
-	// loadDetailsFromAPI returns a promise
-	// the console.log(song) statement is placed inside the .then() method to ensure
-	// details have been loaded before logging i.e. wait for asynchronous operation of fetch
-	
-	loadDetailsFromAPI(song).then(function () {
-	    showModal(song);
-	})
+	// Get a head start on empty old modal
+	// query for appropriate space to fill in DOM
+	let modalHeader = $('.modal-header');
+	let modalTitle = $('.modal-title');
+	let modalBody = $('.modal-body');
+	// empty what's been there before
+	modalTitle.empty();
+	modalBody.empty();
+
+	// Wait for a sec so modal shows up cleanly
+
+	setTimeout(() => {
+	    // loadDetailsFromAPI returns a promise
+	    // the console.log(song) statement is placed inside the .then() method to ensure
+	    // details have been loaded before logging i.e. wait for asynchronous operation of fetch
+	    loadDetailsFromAPI(song).then(function () {
+		showModal(song);
+	    })
+	}, 1000);
     }
 
     // function to be passed to addListItem
