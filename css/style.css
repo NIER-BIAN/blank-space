@@ -1,3 +1,7 @@
+.red-boxed {
+    border: 2px solid red;
+}
+
 :root {
     --text-color: #ffffff;
     --primary-color: #F660AB;
@@ -66,7 +70,17 @@ a:hover, a:focus {
     Components
    ================ */
 
+/* lists */
+
+li {
+    margin: 10px;
+}
+
 /* buttons */
+
+li button {
+    width: 100%;
+}
 
 button, input[type=submit] {
     border: 2px solid var(--primary-color);
