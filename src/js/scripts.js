@@ -112,7 +112,6 @@ let songRepository = (function () {
     function showModal(song) {
 
 	// query for appropriate space to fill in DOM
-	let modalHeader = $('.modal-header');
 	let modalTitle = $('.modal-title');
 	let modalBody = $('.modal-body');
 
@@ -128,13 +127,7 @@ let songRepository = (function () {
     }
     
     function loadDetailsFromAPI(item) {
-
-	// Get a head start on empty old modal
-	// query for appropriate space to fill in DOM
-	let modalHeader = $('.modal-header');
-	let modalTitle = $('.modal-title');
-	let modalBody = $('.modal-body');
-	
+		
 	let url = item.detailsUrl;
 
 	//fetch returns promise
@@ -161,12 +154,6 @@ let songRepository = (function () {
     
     function showDetails(song) {
 
-	// Get a head start on empty old modal
-	// query for appropriate space to fill in DOM
-	let modalHeader = $('.modal-header');
-	let modalTitle = $('.modal-title');
-	let modalBody = $('.modal-body');
-
 	// loadDetailsFromAPI returns a promise
 	// the console.log(song) statement is placed inside the .then() method to ensure
 	// details have been loaded before logging i.e. wait for asynchronous operation of fetch
@@ -184,7 +171,6 @@ let songRepository = (function () {
 
 	    // Get a head start on empty old modal
 	    // query for appropriate space to fill in DOM
-	    let modalHeader = $('.modal-header');
 	    let modalTitle = $('.modal-title');
 	    let modalBody = $('.modal-body');
 	    // empty what's been there before
