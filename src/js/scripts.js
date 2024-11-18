@@ -13,20 +13,6 @@
 
 //==================================================================================
 
-/* 0. Main logic: List out all songs */
-
-//loadSongsFromAPI() contacts API and pushes to songList
-songRepository.loadSongsFromAPI().then(function() {
-    
-    // getAllSongs() returns songList
-    songRepository.getAllSongs().forEach(function(pokemon){
-	// for each song in songList, a button is created
-	songRepository.showSongButton(pokemon);
-    });
-});
-
-//==================================================================================
-
 /* 1. tweak name cos PokeAPI didn't capitalise first letter */
 
 // Called by loadSongsFromAPI and showModal
@@ -249,3 +235,17 @@ let songRepository = (function () {
     };
 
 })();
+
+//==================================================================================
+
+/* 3. Main logic: List out all songs */
+
+//loadSongsFromAPI() contacts API and pushes to songList
+songRepository.loadSongsFromAPI().then(function() {
+    
+    // getAllSongs() returns songList
+    songRepository.getAllSongs().forEach(function(pokemon){
+	// for each song in songList, a button is created
+	songRepository.showSongButton(pokemon);
+    });
+});
