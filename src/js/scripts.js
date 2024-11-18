@@ -1,4 +1,33 @@
-/* -1. tweak name cos PokeAPI didn't capitalise first letter */
+/*
+
+  Main logic calls:
+  
+  - songRepository.loadSongsFromAPI()
+  - songRepository.getAllSongs()
+  - songRepository.showSongButton()
+  
+  further calls from here:
+  showSongButton ->  addButtonEventHandler() -> showDetails -> loadDetailsFromAPI & showModal() -> loadDetailsFromAPI
+
+*/
+
+//==================================================================================
+
+/* 0. Main logic: List out all songs */
+
+//loadSongsFromAPI() contacts API and pushes to songList
+songRepository.loadSongsFromAPI().then(function() {
+    
+    // getAllSongs() returns songList
+    songRepository.getAllSongs().forEach(function(pokemon){
+	// for each song in songList, a button is created
+	songRepository.showSongButton(pokemon);
+    });
+});
+
+//==================================================================================
+
+/* 1. tweak name cos PokeAPI didn't capitalise first letter */
 
 // Called by loadSongsFromAPI and showModal
 function nameTweaker (name) {
@@ -6,15 +35,17 @@ function nameTweaker (name) {
     return tweakedName;
 }
 
-/* 0. songRepository IIFE  */
+//==================================================================================
+
+/* 2. songRepository IIFE  */
 
 let songRepository = (function () {
     
     let songList = [];
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
-    // apiUrl = 'https://api.lyrics.ovh/v1/Coldplay'
-
-    //----- loading message for loadSongsFromAPI() & loadDetailsFromAPI() --------//
+    
+    //---------------------------------------------------------------------------
+    // loading message for loadSongsFromAPI() & loadDetailsFromAPI()
     
     function showLoadingMessage() {
 	
@@ -33,25 +64,9 @@ let songRepository = (function () {
 	
 	container.removeChild(loadingMessage);
     }
-    
-    //------------- loadSongsFromAPI calls pushToSongList -------------------//
-    
-    function pushToSongList(song) {
-	
-	/* Check if object*/
-	if (typeof(song) !== 'object') {
-	    return 'Added item must be object.';
-	}
 
-	/* Check if contains right fields*/
-	// expectedFields = ['name', 'album', 'year', 'category'].toString();
-	// songKeys = Object.keys(song).toString();
-	// if (songKeys !== expectedFields) {
-	//    return 'Added item must contain the fields name, album, year, and category.';
-	//}
-
-	songList.push(song);
-    }
+    //---------------------------------------------------------------------------
+    // Func called by main logic 1 of 3: songRepository.loadSongsFromAPI()
     
     function loadSongsFromAPI() {
 
@@ -85,29 +100,83 @@ let songRepository = (function () {
 	    
 	})
     }
-
-    //-------------------------------- find ------------------------------//
-    
-    function find(searchTerm) {
+        
+    function pushToSongList(song) {
 	
-	// anonymous arrow function
-	// takes in parameter 'song' and returns true if name matches searchterm
-	// filter() method of Array instances then shallow copies that portion
-	result = songList.filter((song) => song.name == searchTerm);
-
-	if (result.length === 0) {
-	    return 'We found nothing.';
+	/* Check if object*/
+	if (typeof(song) !== 'object') {
+	    return 'Added item must be object.';
 	}
+
+	/* Check if contains right fields*/
+	// expectedFields = ['name', 'album', 'year', 'category'].toString();
+	// songKeys = Object.keys(song).toString();
+	// if (songKeys !== expectedFields) {
+	//    return 'Added item must contain the fields name, album, year, and category.';
+	//}
+
+	songList.push(song);
+    }
+    
+    //---------------------------------------------------------------------------
+    // Func called by main logic 2 of 3: songRepository.getAllSongs()
+
+    function getAllSongs() {
+	return songList;
+    }
+    
+    //---------------------------------------------------------------------------
+    // Func called by main logic 3 of 3: songRepository.showSongButton()
+    
+    function showSongButton(song) {
 	
-	return result;
+	let container = document.querySelector('.song-list');
+	let listItem = document.createElement('li');
+	listItem.classList.add('col-6');
+	listItem.classList.add('col-md-4');
+	listItem.classList.add('col-lg-2');
+
+	// Button
+	let button = document.createElement('button');
+	button.innerText = song.name;
+	button.setAttribute('data-toggle', "modal");
+	button.setAttribute('data-target', "#exampleModal");
+	
+	listItem.appendChild(button);
+	container.appendChild(listItem);
+
+	// Button event handler
+	addButtonEventHandler(button, song);
     }
 
-    //------------------------------ getAllSongs ---------------------------//
+    // function to be passed to addListItem
+    function addButtonEventHandler(button, song) {
+	button.addEventListener('click', function() {
+
+	    showLoadingMessage();
+
+	    // Get a head start on empty old modal
+	    // query for appropriate space to fill in DOM
+	    let modalTitle = $('.modal-title');
+	    let modalBody = $('.modal-body');
+	    // empty what's been there before
+	    modalTitle.empty();
+	    modalBody.empty();
+	    
+	    showDetails(song);
+	})
+    }
     
-    // getAllSongs() calls showSongButton() in main logic
-    // which calls addButtonEventHandler()
-    // which calls showDetails() which calls loadDetailsFromAPI
-    // which in turns calls showModal()
+    function showDetails(song) {
+
+	// loadDetailsFromAPI returns a promise
+	// the console.log(song) statement is placed inside the .then() method to ensure
+	// details have been loaded before logging i.e. wait for asynchronous operation of fetch
+	
+	loadDetailsFromAPI(song).then(function () {
+	    showModal(song);
+	})
+    }
 
     function showModal(song) {
 
@@ -151,83 +220,32 @@ let songRepository = (function () {
 	    
 	});
     }
+
+    //-------------------------------- find ------------------------------//
     
-    function showDetails(song) {
-
-	// loadDetailsFromAPI returns a promise
-	// the console.log(song) statement is placed inside the .then() method to ensure
-	// details have been loaded before logging i.e. wait for asynchronous operation of fetch
-
-	loadDetailsFromAPI(song).then(function () {
-	    showModal(song);
-	})
-    }
-
-    // function to be passed to addListItem
-    function addButtonEventHandler(button, song) {
-	button.addEventListener('click', function() {
-
-	    showLoadingMessage();
-
-	    // Get a head start on empty old modal
-	    // query for appropriate space to fill in DOM
-	    let modalTitle = $('.modal-title');
-	    let modalBody = $('.modal-body');
-	    // empty what's been there before
-	    modalTitle.empty();
-	    modalBody.empty();
-
-	    
-	    showDetails(song);
-	})
-    }
-
-    function showSongButton(song) {
+    function find(searchTerm) {
 	
-	let container = document.querySelector('.song-list');
-	let listItem = document.createElement('li');
-	listItem.classList.add('col-6');
-	listItem.classList.add('col-md-4');
-	listItem.classList.add('col-lg-2');
+	// anonymous arrow function
+	// takes in parameter 'song' and returns true if name matches searchterm
+	// filter() method of Array instances then shallow copies that portion
+	result = songList.filter((song) => song.name == searchTerm);
 
-	// Button
-	let button = document.createElement('button');
-	button.innerText = song.name;
-	button.setAttribute('data-toggle', "modal");
-	button.setAttribute('data-target', "#exampleModal");
+	if (result.length === 0) {
+	    return 'We found nothing.';
+	}
 	
-	listItem.appendChild(button);
-	container.appendChild(listItem);
-
-	// Button event handler
-	addButtonEventHandler(button, song);
-    }
-
-    function getAllSongs() {
-	return songList;
+	return result;
     }
 
     return {
-	
-	pushToSongList: pushToSongList,
-	loadSongsFromAPI: loadSongsFromAPI,
-	find: find,
-	showSongButton: showSongButton,
-	getAllSongs: getAllSongs,
 
-	//not exposed: addButtonEventHandler(), loadDetailsFromAPI(), and  showDetails()
+	// Called in main logic
+	loadSongsFromAPI: loadSongsFromAPI,
+	getAllSongs: getAllSongs,
+	showSongButton: showSongButton,
+	
+	find: find
+
     };
 
 })();
-
-/* 1. List out all songs */
-
-//loadSongsFromAPI() contacts API and pushes to songList
-songRepository.loadSongsFromAPI().then(function() {
-    
-    // getAllSongs() returns songList
-    songRepository.getAllSongs().forEach(function(pokemon){
-	// for each song in songList, a button is created
-	songRepository.showSongButton(pokemon);
-    });
-});
