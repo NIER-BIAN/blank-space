@@ -156,10 +156,12 @@ let songRepository = (function () {
 	
 	let container = document.querySelector('.song-list');
 	let listItem = document.createElement('li');
-	listItem.classList.add('col-4');
+	listItem.classList.add('col-10');
+	listItem.classList.add('col-sm-5');
 	listItem.classList.add('col-md-3');
 	listItem.classList.add('col-lg-2');
-
+	listItem.classList.add('col-xlg-1');
+	
 	// Button
 	let button = document.createElement('button');
 	button.innerText = song.name;
