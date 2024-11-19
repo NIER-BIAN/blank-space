@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 2 version
+*/
+
 .red-boxed {
     border: 2px solid red;
 }
@@ -9,7 +16,8 @@
 }
 
 * {
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 body {
@@ -58,17 +66,13 @@ a:hover, a:focus {
     text-decoration: none;
 }
 
-.loading-message-wrapper {
-    color: var(--text-color);
-    background: var(--secondary-color);
-    width: 30ch;
-    padding: 0 20px 0 20px;
-    border-radius: 25px;
-}
-
 /* ================
     Components
    ================ */
+
+.container {
+    margin: auto;
+}
 
 /* lists */
 
@@ -92,6 +96,7 @@ button, input[type=submit] {
     padding: 10px;
     border-radius: 20px;
     border-bottom: 3px solid red;
+    -webkit-transition: opacity 0.2s;
     transition: opacity 0.2s;
 }
 
@@ -113,7 +118,8 @@ button a:hover {
 .modal-container.is-visible {
     position: fixed;
     padding: 20px;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
     top: 0;
     left: 0;
     width: 100%;
@@ -127,6 +133,7 @@ button a:hover {
     overflow: auto;
     
     /* this is used to center the modal */
+    display: -ms-grid;
     display: grid;
     text-align: center;
 }
@@ -146,4 +153,70 @@ button a:hover {
 
 .modal-close-button {
     float: right;
+}
+
+/* ================
+     loader
+   ================ */
+
+.loading-message-wrapper {
+    max-width: -webkit-fit-content;
+    max-width: -moz-fit-content;
+    max-width: fit-content;
+    margin: 50px auto 0 auto;
+}
+
+.lds-dual-ring {
+  /* change color here */
+    color: white;
+}
+
+.lds-dual-ring,
+.lds-dual-ring:after {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6.4px solid currentColor;
+    border-color: currentColor transparent currentColor transparent;
+    -webkit-animation: lds-dual-ring 1.2s linear infinite;
+            animation: lds-dual-ring 1.2s linear infinite;
+}
+@-webkit-keyframes lds-dual-ring {
+    0% {
+	-webkit-transform: rotate(0deg);
+	        transform: rotate(0deg);
+    }
+    100% {
+	-webkit-transform: rotate(360deg);
+	        transform: rotate(360deg);
+    }
+}
+@keyframes lds-dual-ring {
+    0% {
+	-webkit-transform: rotate(0deg);
+	        transform: rotate(0deg);
+    }
+    100% {
+	-webkit-transform: rotate(360deg);
+	        transform: rotate(360deg);
+    }
+}
+
+.modal-loading-message-wrapper {
+    max-width: -webkit-fit-content;
+    max-width: -moz-fit-content;
+    max-width: fit-content;
+    margin: 0 auto 0 auto;
 }

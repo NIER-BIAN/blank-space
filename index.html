@@ -13,14 +13,11 @@
 
     <main>
 
+      <!-- nav -->
+      
       <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light">
 	
-	<a class="navbar-brand" href="#">Nier's Pokedex</a>
-	
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	  <span class="navbar-toggler-icon"></span>
-	</button>
-
+	<a class="navbar-brand" href="https://github.com/NIER-BIAN/pokedex" target="_blank">Nier's Pokedex</a>
 	<div class="collapse navbar-collapse" id="navbarNav">
 	  
 	  <ul class="navbar-nav">
@@ -29,6 +26,18 @@
 	</div>
 	
       </nav>
+
+      <!-- loading message -->
+      
+      <div class="loading-message-wrapper">
+	<div class="lds-dual-ring"></div>
+      </div>
+
+      <!-- song list -->
+      <div class="container">
+	  <ul class="row song-list list-unstyled"></ul>
+      </div>
+      
 
       <!-- Bs modal -->
 
@@ -40,27 +49,19 @@
 
 	    <div class="modal-header">
 	      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-	      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-	      </button>
 	    </div>
-
+	      
 	    <div class="modal-body">
 	    </div>
 
+	    <div class="modal-loading-message-wrapper">
+	    </div>
+	      
 	    <div class="modal-footer">
 	      <button type="button" data-dismiss="modal">Close</button>
 	    </div>
 	    
 	  </div>
-	</div>
-      </div>
-      
-      <div class="loading-message-wrapper">
-      </div>
-      
-      <div class="container">
-	  <ul class="row song-list list-unstyled"></ul>
 	</div>
       </div>
       

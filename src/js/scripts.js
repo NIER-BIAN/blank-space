@@ -31,24 +31,26 @@ let songRepository = (function () {
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
     
     //---------------------------------------------------------------------------
-    // loading message for loadSongsFromAPI() & loadDetailsFromAPI()
-    
-    function showLoadingMessage() {
-	
-	let loadingMessage = document.createElement('p');
-	let container = document.querySelector('.loading-message-wrapper');
-	
-	loadingMessage.innerText = 'Loading. Please wait!';
-	loadingMessage.classList.add('loading-message');
-	
-	container.appendChild(loadingMessage);
-    }
+    // hide loading message for loadSongsFromAPI()
 
     function hideLoadingMessage() {
 	let container = document.querySelector('.loading-message-wrapper');
-	let loadingMessage = document.querySelector('.loading-message');;
-	
-	container.removeChild(loadingMessage);
+	let loadingMessage = document.querySelector('.lds-dual-ring');
+	container.removeChild(loadingMessage);	
+    }
+
+    function showModalLoadingMessage() {
+	let loadingMessage = document.createElement('h3');
+	let container = document.querySelector('.modal-loading-message-wrapper');
+	loadingMessage.innerText = 'Loading. Please wait!';
+	loadingMessage.classList.add('loading-message');
+	container.appendChild(loadingMessage);
+    }
+    
+    function hideModalLoadingMessage() {
+	let container = document.querySelector('.modal-loading-message-wrapper');
+	let loadingMessage = document.querySelector('.loading-message');
+	container.removeChild(loadingMessage);	
     }
 
     //---------------------------------------------------------------------------
@@ -81,17 +83,18 @@ let songRepository = (function () {
 	    return response.json();
 	    
 	}).then(function (details) {
-
-	    hideLoadingMessage();
+	    
+	    hideModalLoadingMessage();
 
 	    // Now we add the details to the song
 	    item.imageUrl = details.sprites.front_default;
 	    item.height = details.height;
+	    item.weight = details.weight;
 	    item.types = details.types;
 	    
 	}).catch(function (errorMessage) {
 
-	    hideLoadingMessage();
+	    hideModalLoadingMessage();
 	    console.error(errorMessage);
 	    
 	});
@@ -112,6 +115,13 @@ let songRepository = (function () {
 	
 	let height = $('<p>' + 'Height: ' + song.height + '</p>');
 	modalBody.append(height);
+	
+	let weight = $('<p>' + 'Weight: ' + song.weight + '</p>');
+	modalBody.append(weight);
+
+	let typesArray = song.types.map((type) => type.type.name).join(', ')
+	let types = $('<p>' + 'Types: ' + typesArray + '</p>');
+	modalBody.append(types);
     }
 
     function showDetails(song) {
@@ -119,7 +129,6 @@ let songRepository = (function () {
 	// loadDetailsFromAPI returns a promise
 	// the console.log(song) statement is placed inside the .then() method to ensure
 	// details have been loaded before logging i.e. wait for asynchronous operation of fetch
-	
 	loadDetailsFromAPI(song).then(function () {
 	    showModal(song);
 	})
@@ -129,8 +138,8 @@ let songRepository = (function () {
     function addButtonEventHandler(button, song) {
 	button.addEventListener('click', function() {
 
-	    showLoadingMessage();
-
+	    showModalLoadingMessage();
+	    
 	    // Get a head start on empty old modal
 	    // query for appropriate space to fill in DOM
 	    let modalTitle = $('.modal-title');
@@ -147,8 +156,8 @@ let songRepository = (function () {
 	
 	let container = document.querySelector('.song-list');
 	let listItem = document.createElement('li');
-	listItem.classList.add('col-6');
-	listItem.classList.add('col-md-4');
+	listItem.classList.add('col-4');
+	listItem.classList.add('col-md-3');
 	listItem.classList.add('col-lg-2');
 
 	// Button
@@ -192,8 +201,6 @@ let songRepository = (function () {
     }
     
     function loadSongsFromAPI() {
-
-	showLoadingMessage();
 	
 	//fetch returns promise
 	return fetch(apiUrl).then(function (response) {
