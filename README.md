@@ -11,7 +11,10 @@ The Pokedex is a simple webb app that displays a list of 150 Pokémons fetched f
 - Detailed View: Clicking a Pokémon button shows a modal with its image and height.
 - Responsive Design: Uses [Bootstrap](https://getbootstrap.com/) for a responsive layout that adapts to different screen sizes.
 
-Note: The CSS and JavaScript files have been minimized for optimal performance.
+Note:
+
+- This project uses [Autoprefixer](https://autoprefixer.github.io/) to handle vendor prefixes.
+- The CSS and JavaScript files have been minimized for optimal performance.
 
 ---
 
