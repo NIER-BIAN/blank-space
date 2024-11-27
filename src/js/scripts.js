@@ -15,7 +15,13 @@
 
 /* 1. tweak name cos PokeAPI didn't capitalise first letter */
 
-// Called by loadSongsFromAPI and showModal
+/**
+ * Tweaks the name by capitalizing the first letter.
+ * 
+ * Called by loadSongsFromAPI and showModal.
+ * @param {string} name - The name to tweak.
+ * @returns {string} The tweaked name with the first letter capitalized.
+ */
 function nameTweaker (name) {
     tweakedName = name.charAt(0).toUpperCase() + name.slice(1);
     return tweakedName;
@@ -25,6 +31,10 @@ function nameTweaker (name) {
 
 /* 2. songRepository IIFE  */
 
+/**
+ * Song repository IIFE. Manages the list of songs and provides methods to interact with them.
+ * @module songRepository
+ */
 let songRepository = (function () {
     
     let songList = [];
@@ -32,13 +42,21 @@ let songRepository = (function () {
     
     //---------------------------------------------------------------------------
     // hide loading message for loadSongsFromAPI()
-
+    
+    /**
+     * Hides the loading message.
+     * @function hideLoadingMessage
+     */
     function hideLoadingMessage() {
 	let container = document.querySelector('.loading-message-wrapper');
 	let loadingMessage = document.querySelector('.lds-dual-ring');
 	container.removeChild(loadingMessage);	
     }
-
+    
+    /**
+     * Shows the loading message in the modal.
+     * @function showModalLoadingMessage
+     */
     function showModalLoadingMessage() {
 	let loadingMessage = document.createElement('h3');
 	let container = document.querySelector('.modal-loading-message-wrapper');
@@ -46,7 +64,11 @@ let songRepository = (function () {
 	loadingMessage.classList.add('loading-message');
 	container.appendChild(loadingMessage);
     }
-    
+
+    /**
+     * Hides the loading message in the modal.
+     * @function hideModalLoadingMessage
+     */
     function hideModalLoadingMessage() {
 	let container = document.querySelector('.modal-loading-message-wrapper');
 	let loadingMessage = document.querySelector('.loading-message');
@@ -56,6 +78,11 @@ let songRepository = (function () {
     //---------------------------------------------------------------------------
     // find
     
+    /**
+     * Finds a song by its name.
+     * @param {string} searchTerm - The name of the song to search for.
+     * @returns {Array<object>|string} An array of songs matching the search term, or a message if no songs are found.
+     */
     function find(searchTerm) {
 	
 	// anonymous arrow function
@@ -72,7 +99,12 @@ let songRepository = (function () {
     
     //---------------------------------------------------------------------------
     // Func called by main logic 3 of 3: songRepository.showSongButton()
-    
+
+    /**
+     * Loads details for a song from the API.
+     * @param {object} item - The song object containing the details URL.
+     * @returns {Promise<void>} A promise that resolves when the details are loaded.
+     */
     function loadDetailsFromAPI(item) {
 		
 	let url = item.detailsUrl;
@@ -100,6 +132,10 @@ let songRepository = (function () {
 	});
     }
 
+    /**
+     * Displays song details in a modal.
+     * @param {object} song - The song object containing the details to display.
+     */
     function showModal(song) {
 
 	// query for appropriate space to fill in DOM
@@ -124,6 +160,10 @@ let songRepository = (function () {
 	modalBody.append(types);
     }
 
+    /**
+     * Shows the details of a song.
+     * @param {object} song - The song to show details for.
+     */
     function showDetails(song) {
 
 	// loadDetailsFromAPI returns a promise
@@ -133,8 +173,12 @@ let songRepository = (function () {
 	    showModal(song);
 	})
     }
-
-    // function to be passed to addListItem
+    
+    /**
+     * Adds an event handler to a button to show song details.
+     * @param {HTMLButtonElement} button - The button element.
+     * @param {object} song - The song object.
+     */
     function addButtonEventHandler(button, song) {
 	button.addEventListener('click', function() {
 
@@ -152,6 +196,10 @@ let songRepository = (function () {
 	})
     }
     
+     /**
+     * Shows a button for a song in the song list.
+     * @param {object} song - The song object.
+     */
     function showSongButton(song) {
 	
 	let container = document.querySelector('.song-list');
@@ -178,6 +226,10 @@ let songRepository = (function () {
     //---------------------------------------------------------------------------
     // Func called by main logic 2 of 3: songRepository.getAllSongs()
 
+    /**
+     * Gets all songs in the song list.
+     * @returns {Array<object>} The array of songs.
+     */
     function getAllSongs() {
 	return songList;
     }
@@ -185,6 +237,11 @@ let songRepository = (function () {
     //---------------------------------------------------------------------------
     // Func called by main logic 1 of 3: songRepository.loadSongsFromAPI()
 
+    /**
+     * Pushes a song to the song list.
+     * @param {object} song - The song object to push.
+     * @returns {string|undefined} An error message if the input is invalid, otherwise undefined.
+     */
     function pushToSongList(song) {
 	
 	/* Check if object*/
@@ -202,6 +259,10 @@ let songRepository = (function () {
 	songList.push(song);
     }
     
+    /**
+     * Loads songs from the API.
+     * @returns {Promise<void>} A promise that resolves when the songs are loaded.
+     */
     function loadSongsFromAPI() {
 	
 	//fetch returns promise
