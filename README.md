@@ -2,7 +2,7 @@
 
 This project is live at https://nier-bian.github.io/pokedex
 
-The Pokedex is a simple webb app that displays a list of 150 Pokémons fetched from the [PokéAPI](https://pokeapi.co/). When a Pokémon is clicked, the app fetches the selected Pokémon's details from the API and displays them in a modal.
+The Pokedex is a simple web app that displays a list of 150 Pokémons fetched from the [PokéAPI](https://pokeapi.co/). When a Pokémon is clicked, the app fetches the selected Pokémon's details from the API and displays them in a modal.
 
 ## Features:
 
